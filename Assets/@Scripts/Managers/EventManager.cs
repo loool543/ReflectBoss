@@ -28,7 +28,7 @@ public class EventManager : Singleton<EventManager>
     public void TriggerEvent(EEventType eventType)
     {
         if (_events.ContainsKey(eventType))
-            _events[eventType].Invoke();
+            _events[eventType]?.Invoke();
     }
 
     private void OnDestroy()

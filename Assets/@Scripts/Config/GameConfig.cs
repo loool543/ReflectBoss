@@ -13,6 +13,12 @@ public class GameConfig : ScriptableObject
     [SerializeField]
     private int initialLevel = 1;
 
+    [SerializeField]
+    private int initialHP = 100;
+
+
+
     public int InitialGold => initialGold;
     public int InitialLevel => initialLevel;
+    public int InitialHP => initialHP;
 }

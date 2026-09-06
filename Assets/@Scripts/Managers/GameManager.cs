@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +7,8 @@ public class GameData
 {
     public int Gold;
     public int Level;
-    public List<int> UpgradeCount; 
+    public int HP ;
+    public int MaxHP = 100;
 }
 
 public class GameManager : Singleton<GameManager>
@@ -34,5 +34,18 @@ public class GameManager : Singleton<GameManager>
 
         }
     }
+
+    public int HP
+    {
+        get { return GameData.HP; }
+        set
+        {
+            GameData.HP = value;
+            EventManager.Instance.TriggerEvent(Define.EEventType.HPChanged);
+            // TODO : HP가 변경 될 떄마다 모두에게 전파
+
+        }
+    }
+
 
 }

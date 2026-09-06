@@ -14,6 +14,11 @@ public static class Define
         None,
         GoldChanged,
         LanguageChanged,
+        HPChanged,
+        PlayerHit,
+        ReflectSuccess,
+        BossHit,
+        BossHPChanged,
 
     }
 
