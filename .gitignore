@@ -1,0 +1,54 @@
+# Unity generated folders
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+[Uu]ser[Ss]ettings/
+
+# Asset metadata should be committed
+!/[Aa]ssets/**/*.meta
+!/[Pp]ackages/**/*.meta
+!/[Pp]roject[Ss]ettings/**/*.meta
+
+# IDE and editor files
+.vs/
+.idea/
+.vscode/
+*.csproj
+*.sln
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Unity generated solutions and project files
+/[Aa]ssets/[Ss]cripts/**/*.csproj
+/[Aa]ssets/[Ee]ditor/**/*.csproj
+/[Aa]ssets/[Pp]lugins/Editor/**/*.csproj
+
+# Crash reports and diagnostics
+sysinfo.txt
+*.stackdump
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Auto-generated addressables data
+[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+
+# Visual Studio cache
+.vsconfig
+
+# Build artifacts
+/[Rr]elease/
+/[Dd]ebug/
+/[Aa]rtifacts/
