@@ -59,6 +59,8 @@ public class Boss : MonoBehaviour
         Debug.Log($"Boss Hit - Current HP : {_currentHP}", this);
         EventManager.Instance.TriggerEvent(Define.EEventType.BossHit);
         EventManager.Instance.TriggerEvent(Define.EEventType.BossHPChanged);
+        if (_currentHP == 0)
+            GameManager.Instance.ChangeGameState(Define.EGameState.Success);
     }
 
     private void CheckStageTransition()

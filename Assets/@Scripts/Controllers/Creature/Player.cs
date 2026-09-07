@@ -42,9 +42,12 @@ public class Player : Creature
             return;
 
         GameManager game = GameManager.Instance;
+        bool wasAlive = game.HP > 0;
         game.HP = Mathf.Max(0, game.HP - damage);
         Debug.Log($"Player Hit - Current HP : {game.HP}", this);
         EventManager.Instance.TriggerEvent(Define.EEventType.PlayerHit);
+        if (wasAlive && game.HP == 0)
+            game.ChangeGameState(Define.EGameState.Fail);
     }
 
     private CharacterController _controller;

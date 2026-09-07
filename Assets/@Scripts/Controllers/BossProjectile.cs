@@ -112,7 +112,10 @@ public class BossProjectile : MonoBehaviour
 
                 transform.position += normal * (depth + WallSkin);
                 if (Vector3.Dot(Direction, normal) < 0f)
+                {
                     Direction = Vector3.Reflect(Direction, normal).normalized;
+                    SoundManager.Instance.Play2D(Define.ESound.Collision, "collision");
+                }
                 center = transform.TransformPoint(_sphere.center);
             }
         }
@@ -151,6 +154,7 @@ public class BossProjectile : MonoBehaviour
 
             distance -= nearestDistance;
             Direction = Vector3.Reflect(Direction, nearestHit.normal).normalized;
+            SoundManager.Instance.Play2D(Define.ESound.Collision, "collision");
             transform.position += nearestHit.normal * WallSkin;
             center = transform.TransformPoint(_sphere.center);
         }
@@ -187,6 +191,7 @@ public class BossProjectile : MonoBehaviour
         if (IsBoss(other))
         {
             Remove();
+            SoundManager.Instance.Play2D(Define.ESound.Collision, "collision");
             if (_projectileType == ProjectileType.BasketBall && IsReflected && _boss != null)
                 _boss.TakeDamage(Damage);
             return;
@@ -204,11 +209,13 @@ public class BossProjectile : MonoBehaviour
             Direction = (_boss.HitPosition - transform.position).normalized;
             Debug.Log("Reflect Success", this);
             EventManager.Instance.TriggerEvent(Define.EEventType.ReflectSuccess);
+            SoundManager.Instance.Play2D(Define.ESound.Reflect, "reflect");
             return;
         }
 
         // Mark consumed before notifying listeners, including when Player has multiple colliders.
         Remove();
+        SoundManager.Instance.Play2D(Define.ESound.Collision, "collision");
         _player.TakeDamage(Damage);
     }
 

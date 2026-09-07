@@ -20,14 +20,19 @@ public static class Define
         BossHit,
         BossHPChanged,
         BossStageChanged,
+        GameStateChanged,
 
     }
+
+    public enum EGameState { Playing, Success, Fail }
 
     public enum ESound
     {
         Bgm,
-        Effect,
-       
+        Collision,
+        Reflect,
+        Success,
+        Fail,
         MaxCount
     }
     public enum ELanguage
