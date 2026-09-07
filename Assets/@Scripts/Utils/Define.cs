@@ -19,6 +19,7 @@ public static class Define
         ReflectSuccess,
         BossHit,
         BossHPChanged,
+        BossStageChanged,
 
     }
 

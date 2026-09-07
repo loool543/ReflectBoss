@@ -26,8 +26,9 @@ public class DevScene : BaseScene
 
         StartCoroutine(CoPlaySound());
 
-        SaveManager.Instance.Load();
-        SaveManager.Instance.StartAutoSave();
+        GameManager.Instance.InitializeNewGame();
+        //SaveManager.Instance.Load();
+        //SaveManager.Instance.StartAutoSave();
 
         //Debug.Log(DataManager.Instance.GameConfig.InitialGold);
     }

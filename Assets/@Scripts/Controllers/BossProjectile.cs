@@ -16,6 +16,7 @@ public class BossProjectile : MonoBehaviour
 
     public ProjectileType Type => _projectileType;
     public Vector3 Direction { get; private set; }
+    // Gameplay Reflect by Player Block only; Env bounces never change this value.
     public bool IsReflected { get; private set; }
 
     private const int Damage = 10;
@@ -26,6 +27,7 @@ public class BossProjectile : MonoBehaviour
     private bool _launched;
     private bool _finished;
     private bool _stage2;
+    private bool _hasLeftBoss;
     private const float WallSkin = 0.001f;
 
     private void Awake()
@@ -53,6 +55,7 @@ public class BossProjectile : MonoBehaviour
         Direction = direction.normalized;
         _stage2 = stage2;
         IsReflected = false;
+        _hasLeftBoss = false;
         _elapsedTime = 0f;
         _finished = false;
         _launched = true;
@@ -77,11 +80,20 @@ public class BossProjectile : MonoBehaviour
         float radius = _sphere.radius * Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.y), Mathf.Abs(scale.z));
 
         // A sweep does not report colliders already overlapping its starting sphere.
-        foreach (Collider overlap in Physics.OverlapSphere(center, radius, ~0, QueryTriggerInteraction.Collide))
+        Collider[] overlaps = Physics.OverlapSphere(center, radius, ~0, QueryTriggerInteraction.Collide);
+        if (!_hasLeftBoss)
+        {
+            bool overlapsBoss = false;
+            foreach (Collider overlap in overlaps)
+                overlapsBoss |= IsBoss(overlap);
+            _hasLeftBoss = !overlapsBoss;
+        }
+
+        foreach (Collider overlap in overlaps)
         {
             if (IsTarget(overlap))
             {
-                HandleHit();
+                HandleHit(overlap);
                 return;
             }
         }
@@ -133,7 +145,7 @@ public class BossProjectile : MonoBehaviour
             transform.position += Direction * nearestDistance;
             if (IsTarget(nearestHit.collider))
             {
-                HandleHit();
+                HandleHit(nearestHit.collider);
                 return;
             }
 
@@ -155,21 +167,27 @@ public class BossProjectile : MonoBehaviour
 
     private bool IsTarget(Collider other)
     {
-        if (IsReflected)
-            return _boss != null && other.GetComponentInParent<Boss>() == _boss;
+        // Ignore only the initial overlap with the firing Boss, not a later return.
+        if (IsBoss(other))
+            return IsReflected || _hasLeftBoss;
 
-        return _player != null && other.GetComponentInParent<Player>() == _player;
+        return !IsReflected && _player != null && other.GetComponentInParent<Player>() == _player;
     }
 
-    private void HandleHit()
+    private bool IsBoss(Collider other)
+    {
+        return _boss != null && other.GetComponentInParent<Boss>() == _boss;
+    }
+
+    private void HandleHit(Collider other)
     {
         if (_finished)
             return;
 
-        if (IsReflected)
+        if (IsBoss(other))
         {
             Remove();
-            if (_projectileType == ProjectileType.BasketBall && _boss != null)
+            if (_projectileType == ProjectileType.BasketBall && IsReflected && _boss != null)
                 _boss.TakeDamage(Damage);
             return;
         }

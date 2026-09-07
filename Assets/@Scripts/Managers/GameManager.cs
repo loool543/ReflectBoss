@@ -47,5 +47,20 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    public void InitializeNewGame()
+    {
+        GameConfig config = DataManager.Instance.GameConfig;
+
+        GameData = new GameData()
+        {
+            Gold = config.InitialGold,
+            Level = config.InitialLevel,
+            HP = config.InitialHP,
+            MaxHP = config.InitialHP
+        };
+
+        EventManager.Instance.TriggerEvent(Define.EEventType.HPChanged);
+    }
+
 
 }

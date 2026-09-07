@@ -40,12 +40,14 @@ public class UI_Base : MonoBehaviour
     protected void BindImages(Type type) { Bind<Image>(type); }
     protected void BindTexts(Type type) { Bind<TMP_Text>(type); }
     protected void BindButtons(Type type) { Bind<Button>(type); }
+    protected void BindSliders(Type type) { Bind<Slider>(type); }
 
     protected GameObject GetObject(int idx) { return Get<GameObject>(idx); }
     protected TMP_Text GetText(int idx) { return Get<TMP_Text>(idx); }
     protected Button GetButton(int idx) { return Get<Button>(idx); }
     protected Image GetImage(int idx) { return Get<Image>(idx); }
 
+    protected Slider GetSlider(int idx) { return Get<Slider>(idx); }
 
     protected void Bind<T>(Type type) where T : Object
     {

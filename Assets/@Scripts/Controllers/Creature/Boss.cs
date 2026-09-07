@@ -35,6 +35,7 @@ public class Boss : MonoBehaviour
     {
         _currentHP = _maxHP;
         CurrentStage = BossStage.Stage1;
+        EventManager.Instance.TriggerEvent(Define.EEventType.BossStageChanged);
         EventManager.Instance.TriggerEvent(Define.EEventType.BossHPChanged);
         _attackCoroutine = StartCoroutine(CoAttack());
     }
@@ -66,6 +67,7 @@ public class Boss : MonoBehaviour
             return;
 
         CurrentStage = BossStage.Stage2;
+        EventManager.Instance.TriggerEvent(Define.EEventType.BossStageChanged);
         Debug.Log("Boss Stage2 Started", this);
     }
 

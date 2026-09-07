@@ -74,13 +74,8 @@ public class SaveManager : Singleton<SaveManager>
 
     public void Reset()
     {
-        GameData gameData = new GameData()
-        {
-            Gold = DataManager.Instance.GameConfig.InitialGold,
-            Level = DataManager.Instance.GameConfig.InitialLevel,
-            HP = DataManager.Instance.GameConfig.InitialHP,
-        };
-        GameManager.Instance.GameData = gameData;
+        GameManager.Instance.InitializeNewGame();
+
         Save();
     }
 
