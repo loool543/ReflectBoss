@@ -1,4 +1,5 @@
 # Unity generated folders
+*.unitypackage
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
