@@ -15,6 +15,7 @@ public class SoundManager : Singleton<SoundManager>
 
     private void Awake()
     {
+        SoundRoot.SetParent(transform, false);
         string[] soundTypeNames = System.Enum.GetNames(typeof(Define.ESound));
         for (int i = 0; i < soundTypeNames.Length - 1; i++)
         {

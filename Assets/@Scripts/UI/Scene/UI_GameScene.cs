@@ -10,6 +10,7 @@ public class UI_GameScene : UI_Scene
     private Coroutine _playerHPCoroutine;
     private Coroutine _bossHPCoroutine;
     private bool _refreshImmediately;
+    private UI_Popup _resultPopup;
     enum Texts
     {
         StageText,
@@ -49,6 +50,7 @@ public class UI_GameScene : UI_Scene
         EventManager.Instance.AddEvent(Define.EEventType.HPChanged, RefreshPlayerHP);
         EventManager.Instance.AddEvent(Define.EEventType.BossHPChanged, RefreshBossHP);
         EventManager.Instance.AddEvent(Define.EEventType.BossStageChanged, RefreshStage);
+        EventManager.Instance.AddEvent(Define.EEventType.GameStateChanged, RefreshResult);
         RefreshUI();
     }
 
@@ -58,6 +60,7 @@ public class UI_GameScene : UI_Scene
         EventManager.Instance.RemoveEvent(Define.EEventType.HPChanged, RefreshPlayerHP);
         EventManager.Instance.RemoveEvent(Define.EEventType.BossHPChanged, RefreshBossHP);
         EventManager.Instance.RemoveEvent(Define.EEventType.BossStageChanged, RefreshStage);
+        EventManager.Instance.RemoveEvent(Define.EEventType.GameStateChanged, RefreshResult);
         StopHPAnimation(ref _playerHPCoroutine);
         StopHPAnimation(ref _bossHPCoroutine);
     }
@@ -79,6 +82,18 @@ public class UI_GameScene : UI_Scene
         GameManager game = GameManager.Instance;
         RefreshHP(GetSlider((int)Sliders.PlayerSlider), game.HP, game.GameData.MaxHP,
             ref _playerHPCoroutine);
+    }
+
+    private void RefreshResult()
+    {
+        Define.EGameState state = GameManager.Instance.CurrentState;
+        if (state == Define.EGameState.Playing || _resultPopup != null)
+            return;
+        Time.timeScale = 0f;
+        if (state == Define.EGameState.Success)
+            _resultPopup = UIManager.Instance.ShowPopupUI<UI_Success>();
+        else if (state == Define.EGameState.Fail)
+            _resultPopup = UIManager.Instance.ShowPopupUI<UI_Fail>();
     }
 
     private void RefreshBossHP()

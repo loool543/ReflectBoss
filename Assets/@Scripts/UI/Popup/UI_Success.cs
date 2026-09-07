@@ -31,7 +31,7 @@ public class UI_Success : UI_Popup
 
         GetButton((int)Buttons.RetryButton).onClick.AddListener(() =>
         {
-            //regame
+            RetryGame();
         }
         );
 

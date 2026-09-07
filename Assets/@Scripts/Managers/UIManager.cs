@@ -79,7 +79,7 @@ public class UIManager : Singleton<UIManager>
     {
         if (string.IsNullOrEmpty(name))
             name = typeof(T).Name;
-        if (_popups.TryGetValue(name, out UI_Popup popup) == false)
+        if (_popups.TryGetValue(name, out UI_Popup popup) == false || popup == null)
         {
             GameObject go = ResourceManager.Instance.Instantiate(name);
             popup = Utils.GetOrAddComponent<T>(go);
@@ -87,11 +87,24 @@ public class UIManager : Singleton<UIManager>
         }
         _popupStack.Push(popup);
 
-        popup.transform.SetParent(PopupRoot);
+        Canvas canvas = SceneUI != null ? SceneUI.GetComponentInParent<Canvas>() : null;
+        if (canvas == null && SceneUI != null)
+            canvas = SceneUI.GetComponentInChildren<Canvas>();
+        if (popup.GetComponent<Canvas>() == null && canvas == null)
+        {
+            Debug.LogError("UIManager: Canvas-less popup requires an existing scene Canvas.");
+            _popupStack.Pop();
+            popup.gameObject.SetActive(false);
+            return null;
+        }
+        popup.transform.SetParent(canvas != null ? canvas.rootCanvas.transform : PopupRoot, false);
+        popup.transform.SetAsLastSibling();
         popup.gameObject.SetActive(true);
         _popupOrder++;
 
-        popup.GetComponent<Canvas>().sortingOrder = _popupOrder;
+        Canvas popupCanvas = popup.GetComponent<Canvas>();
+        if (popupCanvas != null)
+            popupCanvas.sortingOrder = _popupOrder;
 
         return popup as T;
     }
