@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using static Define;
-using static Unity.VisualScripting.Icons;
 
 
 [System.Serializable]

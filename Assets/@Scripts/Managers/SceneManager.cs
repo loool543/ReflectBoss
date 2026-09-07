@@ -11,6 +11,7 @@ public class SceneManager : Singleton<SceneManager>
         _retrying = true;
         Time.timeScale = 1f;
         UIManager.Instance.Clear();
+        GameManager.Instance.InitializeNewGame();
         SoundManager.Instance.Clear();
         LoadScene(Define.EScene.DevScene);
         _retrying = false;

@@ -1,8 +1,12 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
+
+// Run after the existing UI has bound and disabled StartButton.
+[DefaultExecutionOrder(100)]
 public class LoadingScene : BaseScene
 {
+
+    private UI_Notify _notifyUI;
 
     protected override void Awake()
     {
@@ -10,6 +14,11 @@ public class LoadingScene : BaseScene
         SceneType = Define.EScene.LoadingScene;
 
         //TODO : 로딩하는 코드!
+        _notifyUI = FindFirstObjectByType<UI_Notify>();
+        if (_notifyUI == null)
+            Debug.LogError("LoadingScene: UI_Notify is missing.", this);
+        else
+            _notifyUI.SetStartButtonInteractable(false);
         ResourceManager.Instance.LoadAll(OnProgress, OnComplete);
 
     }
@@ -25,6 +34,8 @@ public class LoadingScene : BaseScene
     {
         Debug.Log("Loading Complete!");
         DataManager.Instance.LoadData();
-        SceneManager.Instance.LoadScene(Define.EScene.DevScene);
+        GameManager.Instance.InitializeNewGame();
+        if (_notifyUI != null)
+            _notifyUI.SetStartButtonInteractable(true);
     }
 }
