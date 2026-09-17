@@ -28,8 +28,6 @@ public class UI_GameScene : UI_Scene
         BossSlider,
     }
 
-
-
     protected override void Awake()
     {
         base.Awake();
@@ -44,9 +42,9 @@ public class UI_GameScene : UI_Scene
         ConfigureSlider(GetSlider((int)Sliders.BossSlider));
     }
 
-    protected override void OnEnable()
+    private void OnEnable()
     {
-        base.OnEnable();
+
         EventManager.Instance.AddEvent(Define.EEventType.HPChanged, RefreshPlayerHP);
         EventManager.Instance.AddEvent(Define.EEventType.BossHPChanged, RefreshBossHP);
         EventManager.Instance.AddEvent(Define.EEventType.BossStageChanged, RefreshStage);
@@ -54,9 +52,9 @@ public class UI_GameScene : UI_Scene
         RefreshUI();
     }
 
-    protected override void OnDisable()
+    private void OnDisable()
     {
-        base.OnDisable();
+
         EventManager.Instance.RemoveEvent(Define.EEventType.HPChanged, RefreshPlayerHP);
         EventManager.Instance.RemoveEvent(Define.EEventType.BossHPChanged, RefreshBossHP);
         EventManager.Instance.RemoveEvent(Define.EEventType.BossStageChanged, RefreshStage);
@@ -64,7 +62,6 @@ public class UI_GameScene : UI_Scene
         StopHPAnimation(ref _playerHPCoroutine);
         StopHPAnimation(ref _bossHPCoroutine);
     }
-
 
     //View
     public override void RefreshUI()

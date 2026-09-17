@@ -1,7 +1,5 @@
 using UnityEngine;
 
-
-
 public class DevScene : BaseScene
 { 
     protected override void Awake()
@@ -9,15 +7,7 @@ public class DevScene : BaseScene
         base.Awake();
         SceneType = Define.EScene.DevScene;
 
-        //TODO : 개발용 씬에서 필요한 초기화 코드 넣기!
-
-        //일단 test용으로 바로 DevScene에서 시작하도록 잠깐 넣어줌
-
         SoundManager.Instance.Play2D(Define.ESound.Bgm, "bgm");
-        //SaveManager.Instance.Load();
-        //SaveManager.Instance.StartAutoSave();
-
-        //Debug.Log(DataManager.Instance.GameConfig.InitialGold);
     }
 
     private Boss _boss;
@@ -58,14 +48,6 @@ public class DevScene : BaseScene
         else if (state == Define.EGameState.Success)
             SoundManager.Instance.Play2D(Define.ESound.Success, "success");
     }
-        //UI
-        //UIManager.Instance.ShowSceneUI<UI_DevScene>();
-
-
-        //foreach (var item in DataManager.Instance.ItemDict.Values)
-        //{
-        //    Debug.Log($"Item TemplateId: {item.TemplateID}, NameTextId: {item.NameTextID}");
-        //}
     
 
 }

@@ -21,28 +21,15 @@ public class UI_Base : MonoBehaviour
         RefreshUI();
     }
 
-    protected virtual void OnEnable()
-    {
-        EventManager.Instance.AddEvent(Define.EEventType.LanguageChanged, RefreshUI);
-    }
-
-    protected virtual void OnDisable()
-    {
-        EventManager.Instance.RemoveEvent(Define.EEventType.LanguageChanged, RefreshUI);
-    }
-
     public virtual void RefreshUI()
     {
-        //UI 정상적으로 갱신하는 코드가 들어가면 (다국어 처리도 잘 진행될 예정)
     }
 
-    protected void BindObjects(Type type) { Bind<GameObject>(type); }
     protected void BindImages(Type type) { Bind<Image>(type); }
     protected void BindTexts(Type type) { Bind<TMP_Text>(type); }
     protected void BindButtons(Type type) { Bind<Button>(type); }
     protected void BindSliders(Type type) { Bind<Slider>(type); }
 
-    protected GameObject GetObject(int idx) { return Get<GameObject>(idx); }
     protected TMP_Text GetText(int idx) { return Get<TMP_Text>(idx); }
     protected Button GetButton(int idx) { return Get<Button>(idx); }
     protected Image GetImage(int idx) { return Get<Image>(idx); }
@@ -74,7 +61,6 @@ public class UI_Base : MonoBehaviour
             return null;
         return objects[idx] as T;
     }
-
 
 }
  

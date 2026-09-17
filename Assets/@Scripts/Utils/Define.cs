@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public static class Define 
 {
     public enum EScene
@@ -12,9 +10,9 @@ public static class Define
     public enum EEventType
     {
         None,
-        GoldChanged,
-        LanguageChanged,
-        HPChanged,
+
+        // Preserve existing event IDs after removing example events.
+        HPChanged = 3,
         PlayerHit,
         ReflectSuccess,
         BossHit,
@@ -34,11 +32,6 @@ public static class Define
         Success,
         Fail,
         MaxCount
-    }
-    public enum ELanguage
-    {
-        KOR,
-        ENG
     }
 
 }

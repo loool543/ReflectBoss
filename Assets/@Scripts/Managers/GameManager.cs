@@ -1,13 +1,11 @@
 using System;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 [Serializable]
 public class GameData
 {
-    public int Gold;
-    public int Level;
-    public int HP ;
+    public int HP;
     public int MaxHP = 100;
 }
 
@@ -33,18 +31,6 @@ public class GameManager : Singleton<GameManager>
 
     }
 
-    public int Gold
-    {
-        get { return GameData.Gold; }
-        set
-        {
-            GameData.Gold = value; 
-            EventManager.Instance.TriggerEvent(Define.EEventType.GoldChanged);
-            // TODO : 골드가 변경 될 떄마다 모두에게 전파
-
-        }
-    }
-
     public int HP
     {
         get { return GameData.HP; }
@@ -52,7 +38,6 @@ public class GameManager : Singleton<GameManager>
         {
             GameData.HP = value;
             EventManager.Instance.TriggerEvent(Define.EEventType.HPChanged);
-            // TODO : HP가 변경 될 떄마다 모두에게 전파
 
         }
     }
@@ -65,8 +50,6 @@ public class GameManager : Singleton<GameManager>
 
         GameData = new GameData()
         {
-            Gold = config.InitialGold,
-            Level = config.InitialLevel,
             HP = config.InitialHP,
             MaxHP = config.InitialHP
         };
@@ -75,6 +58,5 @@ public class GameManager : Singleton<GameManager>
         if (stateChanged)
             EventManager.Instance.TriggerEvent(Define.EEventType.GameStateChanged);
     }
-
 
 }

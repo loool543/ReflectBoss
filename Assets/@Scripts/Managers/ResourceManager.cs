@@ -55,7 +55,7 @@ public class ResourcesLoader : IResourceLoader
 
     public void LoadAll(Action<float> onProgress = null, Action onComplete = null)
     {
-        List<string> paths = new List<string> { "Prefabs", "Data/JsonData", "Sounds", "Config" };
+        List<string> paths = new List<string> { "Prefabs", "Sounds", "Config" };
 
         //Resources를 이용한 방법과 Action으로 진행상황 콜백이 잘 어울리진 않지만 일단
         int totalPaths = paths.Count;
