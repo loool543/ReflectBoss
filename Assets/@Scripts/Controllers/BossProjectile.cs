@@ -29,6 +29,10 @@ public class BossProjectile : MonoBehaviour
     private bool _stage2;
     private bool _hasLeftBoss;
     private const float WallSkin = 0.001f;
+    private const int InitialQueryCapacity = 16;
+    // Each projectile owns its buffers; only capacity growth allocates after creation.
+    private Collider[] _overlapBuffer = new Collider[InitialQueryCapacity];
+    private RaycastHit[] _sweepBuffer = new RaycastHit[InitialQueryCapacity];
 
     private void Awake()
     {
@@ -79,18 +83,19 @@ public class BossProjectile : MonoBehaviour
         Vector3 scale = transform.lossyScale;
         float radius = _sphere.radius * Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.y), Mathf.Abs(scale.z));
 
-        // A sweep does not report colliders already overlapping its starting sphere.
-        Collider[] overlaps = Physics.OverlapSphere(center, radius, ~0, QueryTriggerInteraction.Collide);
+        // Handle initial overlaps explicitly before sweeping the movement path.
+        int overlapCount = QueryOverlaps(center, radius, ~0);
         if (!_hasLeftBoss)
         {
             bool overlapsBoss = false;
-            foreach (Collider overlap in overlaps)
-                overlapsBoss |= IsBoss(overlap);
+            for (int i = 0; i < overlapCount; i++)
+                overlapsBoss |= IsBoss(_overlapBuffer[i]);
             _hasLeftBoss = !overlapsBoss;
         }
 
-        foreach (Collider overlap in overlaps)
+        for (int i = 0; i < overlapCount; i++)
         {
+            Collider overlap = _overlapBuffer[i];
             if (IsTarget(overlap))
             {
                 HandleHit(overlap);
@@ -102,9 +107,11 @@ public class BossProjectile : MonoBehaviour
         // synthetic normal returned by a SphereCast starting inside a collider.
         if (_stage2)
         {
-            foreach (Collider wall in Physics.OverlapSphere(center, radius, _envLayerMask,
-                QueryTriggerInteraction.Collide))
+            // The target overlap results are no longer needed, so reuse the same buffer.
+            int wallCount = QueryOverlaps(center, radius, _envLayerMask);
+            for (int i = 0; i < wallCount; i++)
             {
+                Collider wall = _overlapBuffer[i];
                 if (!IsWall(wall) || !Physics.ComputePenetration(_sphere, transform.position,
                     transform.rotation, wall, wall.transform.position, wall.transform.rotation,
                     out Vector3 normal, out float depth))
@@ -126,9 +133,10 @@ public class BossProjectile : MonoBehaviour
         {
             RaycastHit nearestHit = default;
             float nearestDistance = float.PositiveInfinity;
-            foreach (RaycastHit hit in Physics.SphereCastAll(center, radius, Direction, distance,
-                ~0, QueryTriggerInteraction.Collide))
+            int hitCount = QuerySweep(center, radius, distance);
+            for (int i = 0; i < hitCount; i++)
             {
+                RaycastHit hit = _sweepBuffer[i];
                 bool target = IsTarget(hit.collider);
                 bool wall = IsWall(hit.collider) && Vector3.Dot(Direction, hit.normal) < -0.0001f;
                 if ((target || wall) && hit.distance < nearestDistance)
@@ -155,6 +163,34 @@ public class BossProjectile : MonoBehaviour
             Direction = Vector3.Reflect(Direction, nearestHit.normal).normalized;
             transform.position += nearestHit.normal * WallSkin;
             center = transform.TransformPoint(_sphere.center);
+        }
+    }
+
+    private int QueryOverlaps(Vector3 center, float radius, int layerMask)
+    {
+        while (true)
+        {
+            int count = Physics.OverlapSphereNonAlloc(center, radius, _overlapBuffer,
+                layerMask, QueryTriggerInteraction.Collide);
+            if (count < _overlapBuffer.Length)
+                return count;
+
+            // A full buffer may be truncated. Grow and repeat before processing any hits.
+            _overlapBuffer = new Collider[_overlapBuffer.Length * 2];
+        }
+    }
+
+    private int QuerySweep(Vector3 center, float radius, float distance)
+    {
+        while (true)
+        {
+            int count = Physics.SphereCastNonAlloc(center, radius, Direction, _sweepBuffer,
+                distance, ~0, QueryTriggerInteraction.Collide);
+            if (count < _sweepBuffer.Length)
+                return count;
+
+            // A truncated cast is not guaranteed to contain the nearest hit.
+            _sweepBuffer = new RaycastHit[_sweepBuffer.Length * 2];
         }
     }
 
