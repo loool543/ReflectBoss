@@ -57,7 +57,6 @@ public class ResourcesLoader : IResourceLoader
     {
         List<string> paths = new List<string> { "Prefabs", "Sounds", "Config" };
 
-        //Resources를 이용한 방법과 Action으로 진행상황 콜백이 잘 어울리진 않지만 일단
         int totalPaths = paths.Count;
         int loadedPaths = 0;
 
@@ -75,7 +74,6 @@ public class ResourcesLoader : IResourceLoader
                 }
             }
 
-            //로딩 과정 알려주기
             loadedPaths++;
             float progress = (float)loadedPaths / totalPaths;
             onProgress?.Invoke(progress);
@@ -104,7 +102,7 @@ public class ResourcesLoader : IResourceLoader
             return null;
 
         GameObject instance = UnityEngine.Object.Instantiate(prefab, parent);
-        instance.name = prefab.name; //복제된 오브젝트 이름에서 (Clone) 제거
+        instance.name = prefab.name; 
         return instance;
 
     }

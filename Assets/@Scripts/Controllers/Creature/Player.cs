@@ -37,7 +37,7 @@ public class Player : Creature
 
     public void TakeDamage(int damage)
     {
-       Debug.Log($"Damage Á÷Àü HP : {GameManager.Instance.HP}");
+       Debug.Log($"HP just before taking Damage : {GameManager.Instance.HP}");
         if (damage <= 0)
             return;
 
