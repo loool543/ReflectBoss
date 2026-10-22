@@ -65,13 +65,13 @@ Label/Icon/Glow Image를 그 안에 배치한다. 직접 연결한 Root의 위�
 5. 게임 진행 중 컴포넌트 메뉴의 `Preview Reflect (Play Mode)`로 외형을 미리 볼 수 있는지.
 6. 할당을 확인할 경우 초기화 프레임과 이벤트 재생 프레임을 구분하고, UI 외 기존 로그/사운드 경로도 구분하는지.
 
-## Player 위치의 Ring Particle
+## Player 위치의 LineRenderer Ring
 
 `Player` 프리팹의 `PlayerReflectFeedback`도 동일한 `ReflectSuccess` 이벤트를 구독한다.
-반사 위치의 발밑에서 청록색 Ring Particle 하나가 0.24초 동안 확장·페이드한다.
-World simulation space를 사용하므로 이미 재생된 Ring이 이후 Player 이동을 따라가지는 않는다.
-연속 반사 시 이전 입자를 지우고 현재 위치에서 다시 재생하며, 성공/실패·비활성화 시 제거한다.
-`Update`나 코루틴 없이 ParticleSystem의 크기·색상 수명 모듈이 애니메이션을 처리한다.
+반사 위치의 발밑에서 청록색 링 하나가 0.24초 동안 확장·페이드한다.
+LineRenderer의 `useWorldSpace`를 사용하고 반사 순간 중심 좌표를 저장하므로 이후 Player 이동을 따라가지 않는다.
+링 오브젝트는 Player의 자식으로 유지하며, 연속 반사 시 이전 코루틴을 중단하고 새로 재생한다.
+게임 상태 변경·비활성화 시 코루틴을 중단하고 숨긴다. 컴포넌트 파괴 시 링 오브젝트도 정리한다.
 
 | PlayerReflectFeedback 필드 | 역할 |
 | --- | --- |
@@ -80,7 +80,7 @@ World simulation space를 사용하므로 이미 재생된 Ring이 이후 Player
 | Ring Color | Ring 색상과 최대 알파. |
 | Duration | 입자 수명. 기본 0.24초. |
 | Radius | 기준 반지름(월드 단위). 기본 0.45. |
-| Relative Width | 반지름 대비 링 선의 두께. 기본 0.07. |
+| Line Width | 링 선의 두께. 기본 0.04. 초기화 시 적용한다. |
 | Expansion | 수명 종료 시 크기 배율. 시작 배율은 0.55, 종료 기본값은 1.35. |
 
 설정은 Play 전에 조절한다. 실행 중 Player 컴포넌트 메뉴의
@@ -90,12 +90,12 @@ Player FBX의 재질 이름은 `c430ddca-ac7d-4704-a0d6-72363db3b54c_basecolor`�
 대응 재질은 URP/Lit이지만 `_EMISSION` 키워드가 활성화되어 있지 않다.
 현재 URP 소스의 `SampleEmission`은 이 키워드가 없으면 0을 반환한다.
 MaterialPropertyBlock으로 발광 색상만 바꿔서는 효과가 나지 않으므로, 이번에는 Player 원본 재질을
-변경하거나 복제하지 않고 Particle만 적용했다.
+변경하거나 복제하지 않고 링 연출만 적용했다.
 
-링 메시(48분할, 96삼각형)와 ParticleSystem은 초기화 때 한 번 생성하고 재사용한다.
-반사 시 `EmitParams` 구조체로 입자 하나만 방출하며, 새 GameObject·Mesh·Material·코루틴을 만들지 않는다.
-링 전용 재질은 프로젝트 에셋이며 Player 재질과 별개다. 직접 만든 Mesh는 컴포넌트 파괴 시 정리한다.
-이 경로의 실제 GC 수치는 아직 Profiler로 측정하지 않았다.
+LineRenderer 오브젝트는 초기화 때 한 번 생성하고 재사용한다. 재생 중에는 48개 정점과 색상을 갱신한다.
+링 전용 재질은 `sharedMaterial`로 연결하며 Player 재질과 별개다.
+간단한 코루틴 구현을 선택했으므로 반사마다 IEnumerator 및 Coroutine 핸들 할당이 발생한다.
+매 프레임 새 배열이나 대기 객체를 생성하지는 않는다. 실제 CPU·GC 수치는 아직 Profiler로 측정하지 않았다.
 
 플레이 시 바닥 위 표시, 점프 중 위치, 이동 직후 반사, 빠른 연속 반사, 성공/실패 후 숨김,
 Retry 후 재생을 확인한다. 실제 화면 및 Windows 빌드에서의 시각 검증은 별도로 필요하다.
