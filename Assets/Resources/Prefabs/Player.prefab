@@ -68,6 +68,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ea0d55894aeacde439779e683c89502f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1806011174198505027}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ea0d55894aeacde439779e683c89502f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 294078552139924601}
   m_SourcePrefab: {fileID: 100100000, guid: ea0d55894aeacde439779e683c89502f, type: 3}
 --- !u!1 &4526819692970642457 stripped
 GameObject:
@@ -167,3 +170,22 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0.0033209324, y: 0.4771607, z: 0}
+--- !u!114 &294078552139924601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4526819692970642457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d66873625a774498b3a900a9a4a0084c, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  _ringMaterial: {fileID: 2100000, guid: 174e981a984d48e4b3d399e8ae5e81c5, type: 2}
+  _localOffset: {x: 0, y: 0.08, z: 0}
+  _ringColor: {r: 0.3, g: 1, b: 0.85, a: 0.85}
+  _duration: 0.24
+  _radius: 0.45
+  _relativeWidth: 0.07
+  _expansion: 1.35

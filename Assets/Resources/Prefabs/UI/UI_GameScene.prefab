@@ -186,6 +186,7 @@ GameObject:
   - component: {fileID: 2450383380607608967}
   - component: {fileID: 4203485504821499853}
   - component: {fileID: 241378846435404596}
+  - component: {fileID: 876043801210004001}
   m_Layer: 5
   m_Name: UI_GameScene
   m_TagString: Untagged
@@ -1181,3 +1182,29 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &876043801210004001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 951137951386486917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17cbbabe20ac45c58a89de9dbdfd736c, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  _feedbackRoot: {fileID: 0}
+  _label: {fileID: 0}
+  _icon: {fileID: 0}
+  _glowImage: {fileID: 0}
+  _message: REFLECT!
+  _screenAnchor: {x: 0.5, y: 0.28}
+  _offset: {x: 0, y: 0}
+  _textColor: {r: 0.7, g: 1, b: 0.95, a: 1}
+  _duration: 0.45
+  _holdDuration: 0.12
+  _glowDuration: 0.16
+  _popScale: 1.12
+  _glowIntensity: 0.65
+  _glowColor: {r: 0.2, g: 1, b: 0.85, a: 1}
