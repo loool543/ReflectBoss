@@ -13,7 +13,7 @@ public class LoadingScene : BaseScene
         base.Awake();
         SceneType = Define.EScene.LoadingScene;
 
-        //TODO : 로딩하는 코드!
+        
         _notifyUI = FindFirstObjectByType<UI_Notify>();
         if (_notifyUI == null)
             Debug.LogError("LoadingScene: UI_Notify is missing.", this);

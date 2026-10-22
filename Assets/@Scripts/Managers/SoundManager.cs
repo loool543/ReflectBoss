@@ -75,10 +75,10 @@ public class SoundManager : Singleton<SoundManager>
         AudioSource audioSource = soundObject.GetOrAddComponent<AudioSource>();
 
         audioSource.clip = audioClip;
-        audioSource.spatialBlend = 1.0f; // 3D 사운드로 설정
+        audioSource.spatialBlend = 1.0f; // 3D Sounds
         audioSource.minDistance = minDistance;
         audioSource.maxDistance = maxDistance;
-        audioSource.rolloffMode = AudioRolloffMode.Linear; // 거리 감소 방식 설정
+        audioSource.rolloffMode = AudioRolloffMode.Linear; // distance-based attenuation
         audioSource.pitch = pitch;
         audioSource.Play();
     }

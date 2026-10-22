@@ -5,8 +5,8 @@ using UnityEngine;
 public interface IResourceLoader
 {
     void LoadAll(Action<float> onProgress = null, Action onComplete = null);
-    T Get<T>(string key) where T : UnityEngine.Object; // 메모리에 있는 것 꺼내쓰기
-    GameObject Instantiate(string key, Transform parent = null); // 메모리에 있는 것 복제해서 쓰기
+    T Get<T>(string key) where T : UnityEngine.Object; 
+    GameObject Instantiate(string key, Transform parent = null); 
     void Destroy(GameObject go);
     void ReleaseAll();
 
@@ -47,8 +47,8 @@ public class ResourceManager : Singleton<ResourceManager>
 
 
 
-//지금은 이부분이 Resources라는 전통(무식)한 방법으로 구현하지만 나중에 이부분만 필요에 따라
-//바꾸면 된다!
+// Change this to use Addressables instead of Resources for better performance is possible,
+// but for now, this is a simple implementation using Resources.
 public class ResourcesLoader : IResourceLoader
 {
     private Dictionary<string, UnityEngine.Object> _resources = new Dictionary<string, UnityEngine.Object>();
