@@ -31,6 +31,7 @@ public static class Define
         Reflect,
         Success,
         Fail,
+        BossHit,
         MaxCount
     }
 
